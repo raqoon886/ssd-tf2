@@ -6,15 +6,14 @@ import time
 import yaml
 
 from tensorflow.keras.optimizers.schedules import PiecewiseConstantDecay
-from voc_data import create_batch_generator
+from tooth_data import create_batch_generator
 from anchor import generate_default_boxes
 from network import create_ssd
 from losses import create_losses
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--data-dir', default='../dataset')
-parser.add_argument('--data-year', default='2007')
+parser.add_argument('--data-dir', default='')
 parser.add_argument('--arch', default='ssd300')
 parser.add_argument('--batch-size', default=32, type=int)
 parser.add_argument('--num-batches', default=-1, type=int)
@@ -67,7 +66,7 @@ if __name__ == '__main__':
     default_boxes = generate_default_boxes(config)
 
     batch_generator, val_generator, info = create_batch_generator(
-        args.data_dir, args.data_year, default_boxes,
+        args.data_dir, default_boxes,
         config['image_size'],
         args.batch_size, args.num_batches,
         mode='train', augmentation=['flip'])  # the patching algorithm is currently causing bottleneck sometimes
