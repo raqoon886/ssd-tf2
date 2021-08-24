@@ -15,12 +15,11 @@ class ToothDataset():
 
     Attributes:
         root_dir: dataset root dir (ex: ./data/tooth-sample-dsl)
-        year: dataset's year (2007 or 2012)
         num_examples: number of examples to be used
                       (in case one wants to overfit small data)
     """
 
-    def __init__(self, root_dir, year, default_boxes,
+    def __init__(self, root_dir, default_boxes,
                  new_size, num_examples=-1, augmentation=None):
         super(ToothDataset, self).__init__()
         self.idx_to_name = [
@@ -148,12 +147,12 @@ class ToothDataset():
             yield filename, img, gt_confs, gt_locs
 
 
-def create_batch_generator(root_dir, year, default_boxes,
+def create_batch_generator(root_dir, default_boxes,
                            new_size, batch_size, num_batches,
                            mode,
                            augmentation=None):
     num_examples = batch_size * num_batches if num_batches > 0 else -1
-    tooth = ToothDataset(root_dir, year, default_boxes,
+    tooth = ToothDataset(root_dir, default_boxes,
                      new_size, num_examples, augmentation)
 
     info = {
