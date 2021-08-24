@@ -82,7 +82,7 @@ class ToothDataset():
         h, w = orig_shape
         filename = self.ids[index]
         anno_path = os.path.join(self.anno_dir, filename + '.json')
-        with open(json_file) as f:
+        with open(anno_path) as f:
             d = json.load(f)
         boxes = []
         labels = []
