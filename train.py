@@ -30,7 +30,7 @@ args = parser.parse_args()
 
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
 
-NUM_CLASSES = 21
+NUM_CLASSES = 1
 
 
 @tf.function
