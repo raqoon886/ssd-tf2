@@ -100,7 +100,7 @@ class ToothDataset():
 
             labels.append(self.name_to_idx[name] + 1)
 
-        return np.array(boxes, dtype=np.float32), np.array(labels, dtype=np.int64)
+        return np.array(boxes, dtype=np.float32).reshape(-1,4), np.array(labels, dtype=np.int64)
 
     def generate(self, subset=None):
         """ The __getitem__ method
