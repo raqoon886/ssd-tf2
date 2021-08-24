@@ -39,6 +39,4 @@ virtualenv==16.7.5
 virtualenv-clone==0.5.3
 Werkzeug==0.15.5
 wrapt==1.11.2
---index-url https://pypi.python.org/simple/
--e git+https://salsa.debian.org/apt-team/python-apt.git#egg=python-apt
--e .
+python-apt==0.7.8
