@@ -23,7 +23,6 @@ protobuf==3.9.1
 pycrypto==2.6.1
 pygobject==3.26.1
 pyparsing==2.4.2
-python-apt==1.6.4
 python-dateutil==2.8.0
 pyxdg==0.26
 PyYAML==5.1.2
@@ -40,3 +39,6 @@ virtualenv==16.7.5
 virtualenv-clone==0.5.3
 Werkzeug==0.15.5
 wrapt==1.11.2
+--index-url https://pypi.python.org/simple/
+-e git+https://salsa.debian.org/apt-team/python-apt.git#egg=python-apt
+-e .
