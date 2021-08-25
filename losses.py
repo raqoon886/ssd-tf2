@@ -19,8 +19,8 @@ def hard_negative_mining(loss, gt_confs, neg_ratio):
     num_pos = tf.reduce_sum(tf.dtypes.cast(pos_idx, tf.int32), axis=1)
     num_neg = num_pos * neg_ratio
 
-    rank = tf.argsort(loss, axis=1, direction='DESCENDING')
-    rank = tf.argsort(rank, axis=1)
+    rank = tf.argsort(loss, axis=0, direction='DESCENDING')
+    rank = tf.argsort(rank, axis=0)
     neg_idx = rank < tf.expand_dims(num_neg, 1)
 
     return pos_idx, neg_idx
@@ -56,7 +56,7 @@ class SSDLosses(object):
         # compute classification losses
         # without reduction
         temp_loss = cross_entropy(
-            gt_confs, confs)
+            tf.expand_dims(pgt_confs,2), confs)
         pos_idx, neg_idx = hard_negative_mining(
             temp_loss, gt_confs, self.neg_ratio)
 
