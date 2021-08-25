@@ -56,7 +56,7 @@ class SSDLosses(object):
         # compute classification losses
         # without reduction
         temp_loss = cross_entropy(
-            tf.expand_dims(pgt_confs,2), confs)
+            tf.expand_dims(gt_confs,2), confs)
         pos_idx, neg_idx = hard_negative_mining(
             temp_loss, gt_confs, self.neg_ratio)
 
