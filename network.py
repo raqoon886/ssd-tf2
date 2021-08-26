@@ -52,7 +52,7 @@ class SSD(Model):
         """ Initialize the VGG16 layers from pretrained weights
             and the rest from scratch using xavier initializer
         """
-        origin_vgg = VGG16(weights='imagenet')
+        origin_vgg = VGG16(weights='imagenet', classes=1, classifier_activation='sigmoid')
         for i in range(len(self.vgg16_conv4.layers)):
             self.vgg16_conv4.get_layer(index=i).set_weights(
                 origin_vgg.get_layer(index=i).get_weights())
