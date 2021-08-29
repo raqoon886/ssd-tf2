@@ -173,7 +173,7 @@ def create_batch_generator(root_dir, default_boxes,
         train_dataset = train_dataset.shuffle(40).batch(batch_size)
         val_dataset = val_dataset.batch(batch_size)
 
-        return train_dataset.take(num_batches), val_dataset.take(-1), info
+        return train_dataset.take(num_batches), val_dataset.take(num_batches_val), info
     else:
         dataset = tf.data.Dataset.from_generator(
             tooth.generate, (tf.string, tf.float32, tf.int64, tf.float32))
