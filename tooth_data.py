@@ -38,8 +38,8 @@ class ToothDataset():
         if num_examples != -1:
             self.ids = self.ids[:num_examples]
 
-        self.train_ids = self.ids[:1176]
-        self.val_ids = self.ids[1176:]
+        self.train_ids = self.ids[:int(len(self.ids) * 0.75)]
+        self.val_ids = self.ids[int(len(self.ids) * 0.75):]
 
         if augmentation == None:
             self.augmentation = ['original']
