@@ -30,8 +30,7 @@ class ToothDataset():
         self.data_dir = root_dir
         self.image_dir = os.path.join(self.data_dir, 'img')
         self.anno_dir = os.path.join(self.data_dir, 'json')
-        self.ids = list(map(lambda x: x.split('.')[0], os.listdir(self.image_dir)))
-        self.img_ids = os.listdir(self.image_dir)
+        self.ids = [i for i in os.listdir(self.image_dir) if i.startswith('Folder')]
         self.default_boxes = default_boxes
         self.new_size = new_size
 
@@ -61,7 +60,7 @@ class ToothDataset():
         Returns:
             img: tensor of shape (3, 300, 300)
         """
-        img_path = os.path.join(self.image_dir, self.img_ids[index])
+        img_path = os.path.join(self.image_dir, self.ids[index])
         img = Image.open(img_path)
 
         return img
@@ -80,8 +79,8 @@ class ToothDataset():
             labels: numpy array of shape (num_gt,)
         """
         h, w = orig_shape
-        filename = self.ids[index]
-        anno_path = os.path.join(self.anno_dir, filename + '.json')
+        json_filename = self.ids[index].split('.')[0]
+        anno_path = os.path.join(self.anno_dir, json_filename + '.json')
         with open(anno_path) as f:
             d = json.load(f)
         boxes = []
