@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
 
-NUM_CLASSES = 21
+NUM_CLASSES = 1
 BATCH_SIZE = 1
 
 
@@ -38,10 +38,6 @@ def predict(imgs, default_boxes):
 
     confs = tf.squeeze(confs, 0)
     locs = tf.squeeze(locs, 0)
-
-    confs = tf.math.softmax(confs, axis=-1)
-    classes = tf.math.argmax(confs, axis=-1)
-    scores = tf.math.reduce_max(confs, axis=-1)
 
     boxes = decode(default_boxes, locs)
 
