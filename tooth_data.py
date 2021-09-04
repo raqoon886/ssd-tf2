@@ -87,17 +87,16 @@ class ToothDataset():
         labels = []
 
         for member in d['annotation']['regions']:
-            if member['region_attributes']['label'] != 'caries':
-                continue
-            name = member['region_attributes']['label']
+            if member['region_attributes']['label'] == 'caries':
+                name = member['region_attributes']['label']
 
-            xmin = (float(member['shape_attributes']['x']) - 1) / w
-            ymin = (float(member['shape_attributes']['y']) - 1) / h
-            xmax = (float(member['shape_attributes']['x']) + float(member['shape_attributes']['width']) - 1) / w
-            ymax = (float(member['shape_attributes']['y']) + float(member['shape_attributes']['height']) - 1) / h
-            boxes.append([xmin, ymin, xmax, ymax])
+                xmin = (float(member['shape_attributes']['x']) - 1) / w
+                ymin = (float(member['shape_attributes']['y']) - 1) / h
+                xmax = (float(member['shape_attributes']['x']) + float(member['shape_attributes']['width']) - 1) / w
+                ymax = (float(member['shape_attributes']['y']) + float(member['shape_attributes']['height']) - 1) / h
+                boxes.append([xmin, ymin, xmax, ymax])
 
-            labels.append(self.name_to_idx[name] + 1)
+                labels.append(self.name_to_idx[name] + 1)
 
         return np.array(boxes, dtype=np.float32).reshape(-1,4), np.array(labels, dtype=np.int64)
 
