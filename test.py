@@ -85,7 +85,7 @@ if __name__ == '__main__':
     default_boxes = generate_default_boxes(config)
 
     batch_generator, info = create_batch_generator(
-        args.data_dir, args.data_year, default_boxes,
+        args.data_dir, default_boxes,
         config['image_size'],
         BATCH_SIZE, args.num_examples, mode='test')
 
