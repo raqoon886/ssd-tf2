@@ -1,4 +1,5 @@
 import tensorflow as tf
+import numpy as np
 
 
 def compute_area(top_left, bot_right):
@@ -56,40 +57,45 @@ def compute_target(default_boxes, gt_boxes, gt_labels, iou_threshold=0.5):
     """
     # Convert default boxes to format (xmin, ymin, xmax, ymax)
     # in order to compute overlap with gt boxes
-    transformed_default_boxes = transform_center_to_corner(default_boxes)
-    iou = compute_iou(transformed_default_boxes, gt_boxes)
+    try:
+        transformed_default_boxes = transform_center_to_corner(default_boxes)
+        iou = compute_iou(transformed_default_boxes, gt_boxes)
 
-    best_gt_iou = tf.math.reduce_max(iou, 1)
-    best_gt_idx = tf.math.argmax(iou, 1)
+        best_gt_iou = tf.math.reduce_max(iou, 1)
+        best_gt_idx = tf.math.argmax(iou, 1)
 
-    best_default_iou = tf.math.reduce_max(iou, 0)
-    best_default_idx = tf.math.argmax(iou, 0)
+        best_default_iou = tf.math.reduce_max(iou, 0)
+        best_default_idx = tf.math.argmax(iou, 0)
 
-    best_gt_idx = tf.tensor_scatter_nd_update(
-        best_gt_idx,
-        tf.expand_dims(best_default_idx, 1),
-        tf.range(best_default_idx.shape[0], dtype=tf.int64))
+        best_gt_idx = tf.tensor_scatter_nd_update(
+            best_gt_idx,
+            tf.expand_dims(best_default_idx, 1),
+            tf.range(best_default_idx.shape[0], dtype=tf.int64))
 
-    # Normal way: use a for loop
-    # for gt_idx, default_idx in enumerate(best_default_idx):
-    #     best_gt_idx = tf.tensor_scatter_nd_update(
-    #         best_gt_idx,
-    #         tf.expand_dims([default_idx], 1),
-    #         [gt_idx])
+        # Normal way: use a for loop
+        # for gt_idx, default_idx in enumerate(best_default_idx):
+        #     best_gt_idx = tf.tensor_scatter_nd_update(
+        #         best_gt_idx,
+        #         tf.expand_dims([default_idx], 1),
+        #         [gt_idx])
 
-    best_gt_iou = tf.tensor_scatter_nd_update(
-        best_gt_iou,
-        tf.expand_dims(best_default_idx, 1),
-        tf.ones_like(best_default_idx, dtype=tf.float32))
+        best_gt_iou = tf.tensor_scatter_nd_update(
+            best_gt_iou,
+            tf.expand_dims(best_default_idx, 1),
+            tf.ones_like(best_default_idx, dtype=tf.float32))
 
-    gt_confs = tf.gather(gt_labels, best_gt_idx)
-    gt_confs = tf.where(
-        tf.less(best_gt_iou, iou_threshold),
-        tf.zeros_like(gt_confs),
-        gt_confs)
+        gt_confs = tf.gather(gt_labels, best_gt_idx)
+        gt_confs = tf.where(
+            tf.less(best_gt_iou, iou_threshold),
+            tf.zeros_like(gt_confs),
+            gt_confs)
 
-    gt_boxes = tf.gather(gt_boxes, best_gt_idx)
-    gt_locs = encode(default_boxes, gt_boxes)
+        gt_boxes = tf.gather(gt_boxes, best_gt_idx)
+        gt_locs = encode(default_boxes, gt_boxes)
+
+    except:
+        gt_confs = tf.constant(np.zeros([8732,]), dtype=tf.float32)
+        gt_locs = tf.constant(np.zeros([8732,4]), dtype=tf.float32)
 
     return gt_confs, gt_locs
 
