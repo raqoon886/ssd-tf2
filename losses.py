@@ -51,24 +51,23 @@ class SSDLosses(object):
             loc_loss: regression loss
         """
 
-        gt_confs = tf.expand_dims(gt_confs,2)
-        cross_entropy = tf.keras.losses.SparseCategoricalCrossentropy(
+        cross_entropy = tf.keras.losses.BinaryCrossentropy(
             from_logits=True, reduction='none')
 
         # compute classification losses
         # without reduction
-        temp_loss = cross_entropy(gt_confs, confs)
+        temp_loss = cross_entropy(tf.expand_dims(gt_confs,2), confs)
         pos_idx, neg_idx = hard_negative_mining(
             temp_loss, gt_confs, self.neg_ratio)
 
         # classification loss will consist of positive and negative examples
 
-        cross_entropy = tf.keras.losses.SparseCategoricalCrossentropy(
+        cross_entropy = tf.keras.losses.BinaryCrossentropy(
             from_logits=True, reduction='sum')
         smooth_l1_loss = tf.keras.losses.Huber(reduction='sum')
 
         conf_loss = cross_entropy(
-            gt_confs[tf.math.logical_or(pos_idx, neg_idx)],
+            tf.expand_dims(gt_confs,2)[tf.math.logical_or(pos_idx, neg_idx)],
             confs[tf.math.logical_or(pos_idx, neg_idx)])
 
         # regression loss only consist of positive examples
