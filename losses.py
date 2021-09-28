@@ -50,6 +50,8 @@ class SSDLosses(object):
             conf_loss: classification loss
             loc_loss: regression loss
         """
+
+        gt_confs = tf.expand_dims(gt_confs,2)
         cross_entropy = tf.keras.losses.SparseCategoricalCrossentropy(
             from_logits=True, reduction='none')
 
