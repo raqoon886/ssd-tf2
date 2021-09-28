@@ -22,4 +22,4 @@ sudo apt-get install libcudnn7-dev
 sudo dpkg -i libcudnn7_7.1.4.18-1+cuda9.0_amd64.deb
 sudo apt-get install libnccl-dev
 ```
-### implement above code in colab-python environment. (make sure that gpu runtime available in colab kernel)
+### run above code in colab-python environment. (make sure that gpu runtime available in colab kernel)
