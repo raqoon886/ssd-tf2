@@ -50,7 +50,7 @@ class SSDLosses(object):
             conf_loss: classification loss
             loc_loss: regression loss
         """
-        cross_entropy = tf.keras.losses.BinaryCrossentropy(
+        cross_entropy = tf.keras.losses.SparseCategoricalCrossentropy(
             from_logits=True, reduction='none')
 
         # compute classification losses
@@ -62,7 +62,7 @@ class SSDLosses(object):
 
         # classification loss will consist of positive and negative examples
 
-        cross_entropy = tf.keras.losses.BinaryCrossentropy(
+        cross_entropy = tf.keras.losses.SparseCategoricalCrossentropy(
             from_logits=True, reduction='sum')
         smooth_l1_loss = tf.keras.losses.Huber(reduction='sum')
 
