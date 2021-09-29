@@ -177,7 +177,7 @@ def horizontal_flip(img, boxes, labels):
 
     return img, boxes, labels
 
-def vertical_filp(img, boxes, labels):
+def vertical_flip(img, boxes, labels):
 
     img = img.transpose(Image.FLIP_TOP_BOTTOM)
     boxes = tf.stack([
