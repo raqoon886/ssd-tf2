@@ -6,7 +6,7 @@ from PIL import Image
 import random
 
 from box_utils import compute_target
-from image_utils import random_patching, horizontal_flip, vertical_filp
+from image_utils import random_patching, horizontal_flip, vertical_flip
 from functools import partial
 
 
