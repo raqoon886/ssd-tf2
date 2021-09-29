@@ -6,7 +6,7 @@ from PIL import Image
 import random
 
 from box_utils import compute_target
-from image_utils import random_patching, horizontal_flip
+from image_utils import random_patching, horizontal_flip, vertical_filp
 from functools import partial
 
 
@@ -132,6 +132,7 @@ class ToothDataset():
                 img, boxes, labels = random_patching(img, boxes, labels)
             elif augmentation_method == 'flip':
                 img, boxes, labels = horizontal_flip(img, boxes, labels)
+                img, boxes, labels = vertical_flip(img, boxes, labels)
 
             img = np.array(img.resize(
                 (self.new_size, self.new_size)), dtype=np.float32)
