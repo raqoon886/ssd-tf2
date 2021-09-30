@@ -1,7 +1,7 @@
 import tensorflow as tf
 import tensorflow.keras.layers as layers
 from tensorflow.keras import Sequential
-
+from tensorflow.python.training.tracking.data_structures import NoDependency
 
 def create_vgg16_layers():
     vgg16_conv4 = [
@@ -81,7 +81,7 @@ def create_extra_layers():
     model_5.add(layers.Conv2D(128, 1, activation='relu'))
     model_5.add(layers.Conv2D(256, 4, activation='relu'))
 
-    extra_layers = []
+    extra_layers = NoDependency([])
     temp = [model_1, model_2, model_3, model_4, model_5]
     for i in range(5):
         extra_layers.append(temp[i].trainable_variables)
