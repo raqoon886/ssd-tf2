@@ -24,19 +24,19 @@ class SSD(Model):
             gamma_initializer='glorot_uniform'
         )
         self.extra_layers = create_extra_layers()
-        self.conf_1 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'))
-        self.conf_2 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'))
-        self.conf_3 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'))
-        self.conf_4 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'))
-        self.conf_5 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'))
-        self.conf_6 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=1))
+        self.conf_1 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.conf_2 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.conf_3 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.conf_4 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.conf_5 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.conf_6 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=1, input_shape=(1,32,None,None,None)))
 
-        self.loc_1 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same'))
-        self.loc_2 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'))
-        self.loc_3 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'))
-        self.loc_4 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'))
-        self.loc_5 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same'))
-        self.loc_6 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=1))
+        self.loc_1 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.loc_2 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.loc_3 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.loc_4 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.loc_5 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same', input_shape=(1,32,None,None,None)))
+        self.loc_6 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=1, input_shape=(1,32,None,None,None)))
 
     def compute_heads(self, conf, loc):
         """ Compute outputs of classification and regression heads
