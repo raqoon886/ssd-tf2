@@ -110,7 +110,7 @@ class SSD(Model):
 
         for i in range(len(self.extra_layers.layers)):
             x = self.extra_layers.get_layer(index=i)(x)
-            if i%2==1:
+            if i % 2 == 1:
                 conf, loc = self.compute_heads(x, head_idx)
                 confs.append(conf)
                 locs.append(loc)

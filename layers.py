@@ -71,7 +71,7 @@ def create_extra_layers():
         layers.Conv2D(128, 1, activation='relu'),
         layers.Conv2D(256, 3, activation='relu')]
 
-    x = layers.Input(shape=[None, None, 1024])
+    x = layers.Input(shape=[None, None, 512])
     out = x
     for layer in extra_layers:
         out = layer(out)
