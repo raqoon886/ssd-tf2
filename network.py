@@ -34,7 +34,7 @@ class SSD(Model):
             self.conf_head_layers.pop(-2)
             self.loc_head_layers.pop(-2)
 
-    def compute_heads(self, x, idx):
+    def compute_heads(self, conf, loc):
         """ Compute outputs of classification and regression heads
         Args:
             x: the input feature map
@@ -43,10 +43,7 @@ class SSD(Model):
             conf: output of the idx-th classification head
             loc: output of the idx-th regression head
         """
-        conf = self.conf_head_layers[idx](x)
         conf = tf.reshape(conf, [tf.shape(conf)[0], -1, self.num_classes])
-
-        loc = self.loc_head_layers[idx](x)
         loc = tf.reshape(loc, [tf.shape(loc)[0], -1, 4])
 
         return conf, loc
@@ -92,17 +89,23 @@ class SSD(Model):
         confs = []
         locs = []
         head_idx = 0
+        num_classes = 1
         for i in range(len(self.vgg16_conv4.layers)):
             x = self.vgg16_conv4.get_layer(index=i)(x)
             if i == len(self.vgg16_conv4.layers) - 5:
-                conf, loc = self.compute_heads(self.batch_norm(x), head_idx)
+                conf = layers.Conv2D(4 * num_classes, kernel_size=3, padding='same')(x)
+                loc = layers.Conv2D(4 * 4, kernel_size=3, padding='same')(x)
+                conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
 
         x = self.vgg16_conv7(x)
 
-        conf, loc = self.compute_heads(x, head_idx)
+        conf = layers.Conv2D(6 * num_classes, kernel_size=3,
+                             padding='same')
+        loc = layers.Conv2D(6 * 4, kernel_size=3, padding='same')(x)
+        conf, loc = self.compute_heads(conf, loc)
 
         confs.append(conf)
         locs.append(loc)
@@ -110,8 +113,31 @@ class SSD(Model):
 
         for i in range(len(self.extra_layers.layers)):
             x = self.extra_layers.get_layer(index=i)(x)
-            if i in [2, 4, 6, 8]:
-                conf, loc = self.compute_heads(x, head_idx)
+            if i == 2:
+                conf = layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')(x)
+                loc = layers.Conv2D(6 * 4, kernel_size=3, padding='same')(x)
+                conf, loc = self.compute_heads(conf, loc)
+                confs.append(conf)
+                locs.append(loc)
+                head_idx += 1
+            if i == 4:
+                conf = layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')(x)
+                loc = layers.Conv2D(6 * 4, kernel_size=3, padding='same')(x)
+                conf, loc = self.compute_heads(conf, loc)
+                confs.append(conf)
+                locs.append(loc)
+                head_idx += 1
+            if i == 6:
+                conf = layers.Conv2D(4 * num_classes, kernel_size=3, padding='same')(x)
+                loc = layers.Conv2D(4 * 4, kernel_size=3, padding='same')(x)
+                conf, loc = self.compute_heads(conf, loc)
+                confs.append(conf)
+                locs.append(loc)
+                head_idx += 1
+            if i == 8:
+                conf = layers.Conv2D(4 * num_classes, kernel_size=1)(x)
+                loc = layers.Conv2D(4 * 4, kernel_size=1)(x)
+                conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1

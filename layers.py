@@ -94,8 +94,6 @@ def create_conf_head_layers(num_classes):
                       padding='same'),  # for 9th block
         layers.Conv2D(4 * num_classes, kernel_size=3,
                       padding='same'),  # for 10th block
-        layers.Conv2D(4 * num_classes, kernel_size=3,
-                      padding='same'),  # for 11th block
         layers.Conv2D(4 * num_classes, kernel_size=1)  # for 12th block
     ]
 
@@ -110,7 +108,6 @@ def create_loc_head_layers():
         layers.Conv2D(6 * 4, kernel_size=3, padding='same'),
         layers.Conv2D(6 * 4, kernel_size=3, padding='same'),
         layers.Conv2D(6 * 4, kernel_size=3, padding='same'),
-        layers.Conv2D(4 * 4, kernel_size=3, padding='same'),
         layers.Conv2D(4 * 4, kernel_size=3, padding='same'),
         layers.Conv2D(4 * 4, kernel_size=1)
     ]
