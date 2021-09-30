@@ -6,11 +6,7 @@ import numpy as np
 import os
 
 from layers import create_vgg16_layers, \
-    create_extra_layers_1, \
-    create_extra_layers_2, \
-    create_extra_layers_3, \
-    create_extra_layers_4, \
-    create_extra_layers_5, \
+    create_extra_layers, \
     create_conf_head_layers, \
     create_loc_head_layers
 
@@ -29,11 +25,7 @@ class SSD(Model):
             beta_initializer='glorot_uniform',
             gamma_initializer='glorot_uniform'
         )
-        self.extra_layers_1 = create_extra_layers_1()
-        self.extra_layers_2 = create_extra_layers_2()
-        self.extra_layers_3 = create_extra_layers_3()
-        self.extra_layers_4 = create_extra_layers_4()
-        self.extra_layers_5 = create_extra_layers_5()
+        self.extra_layers = create_extra_layers()
 
         self.conf_head_layers = create_conf_head_layers(num_classes)
         self.loc_head_layers = create_loc_head_layers()
@@ -116,29 +108,13 @@ class SSD(Model):
         locs.append(loc)
         head_idx += 1
 
-        x = self.extra_layers_1(x)
-        conf, loc = self.compute_heads(x, head_idx)
-        confs.append(conf)
-        locs.append(loc)
-        head_idx += 1
-
-        x = self.extra_layers_2(x)
-        conf, loc = self.compute_heads(x, head_idx)
-        confs.append(conf)
-        locs.append(loc)
-        head_idx += 1
-
-        x = self.extra_layers_3(x)
-        conf, loc = self.compute_heads(x, head_idx)
-        confs.append(conf)
-        locs.append(loc)
-        head_idx += 1
-
-        x = self.extra_layers_4(x)
-        conf, loc = self.compute_heads(x, head_idx)
-        confs.append(conf)
-        locs.append(loc)
-        head_idx += 1
+        for i in range(len(self.extra_layers)):
+            x = self.extra_layers.get_layer(index=i)(x)
+            if i%2==1:
+                conf, loc = self.compute_heads(x, head_idx)
+                confs.append(conf)
+                locs.append(loc)
+                head_idx += 1
 
         confs = tf.concat(confs, axis=1)
         locs = tf.concat(locs, axis=1)

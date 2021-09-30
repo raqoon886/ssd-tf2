@@ -1,7 +1,6 @@
 import tensorflow as tf
 import tensorflow.keras.layers as layers
 from tensorflow.keras import Sequential
-from tensorflow.python.training.tracking.data_structures import NoDependency
 
 def create_vgg16_layers():
     vgg16_conv4 = [
@@ -59,84 +58,27 @@ def create_extra_layers():
     """ Create extra layers
         8th to 11th blocks
     """
-    model_1 = Sequential()
-    model_1.add(layers.Conv2D(256, 1, activation='relu'))
-    model_1.add(layers.Conv2D(512, 3, strides=2, padding='same',
-                      activation='relu'))
+    extra_layers = [
+        layers.Conv2D(256, 1, activation='relu'),
+        layers.Conv2D(512, 3, strides=2, padding='same', activation='relu'),
 
-    model_2 = Sequential()
-    model_2.add(layers.Conv2D(128, 1, activation='relu'))
-    model_2.add(layers.Conv2D(256, 3, strides=2, padding='same',
-                          activation='relu'))
+        layers.Conv2D(128, 1, activation='relu'),
+        layers.Conv2D(256, 3, strides=2, padding='same', activation='relu'),
 
-    model_3 = Sequential()
-    model_3.add(layers.Conv2D(128, 1, activation='relu'))
-    model_3.add(layers.Conv2D(256, 3, activation='relu'))
+        layers.Conv2D(128, 1, activation='relu'),
+        layers.Conv2D(256, 3, activation='relu'),
 
-    model_4 = Sequential()
-    model_4.add(layers.Conv2D(128, 1, activation='relu'))
-    model_4.add(layers.Conv2D(256, 3, activation='relu'))
+        layers.Conv2D(128, 1, activation='relu'),
+        layers.Conv2D(256, 3, activation='relu')]
 
-    model_5 = Sequential()
-    model_5.add(layers.Conv2D(128, 1, activation='relu'))
-    model_5.add(layers.Conv2D(256, 4, activation='relu'))
+    x = layers.Input(shape=[None, None, 1024])
+    out = x
+    for layer in extra_layers:
+        out = layer(out)
+
+    extra_layers = tf.keras.Model(x, out)
 
     return extra_layers
-
-def create_extra_layers_1():
-    """ Create extra layers
-        8th to 11th blocks
-    """
-    model_1 = Sequential()
-    model_1.add(layers.Conv2D(256, 1, activation='relu'))
-    model_1.add(layers.Conv2D(512, 3, strides=2, padding='same',
-                      activation='relu'))
-
-    return model_1
-
-def create_extra_layers_2():
-    """ Create extra layers
-        8th to 11th blocks
-    """
-
-    model_2 = Sequential()
-    model_2.add(layers.Conv2D(128, 1, activation='relu'))
-    model_2.add(layers.Conv2D(256, 3, strides=2, padding='same',
-                          activation='relu'))
-
-    return model_2
-
-def create_extra_layers_3():
-    """ Create extra layers
-        8th to 11th blocks
-    """
-    model_3 = Sequential()
-    model_3.add(layers.Conv2D(128, 1, activation='relu'))
-    model_3.add(layers.Conv2D(256, 3, activation='relu'))
-
-    return model_3
-
-def create_extra_layers_4():
-    """ Create extra layers
-        8th to 11th blocks
-    """
-
-    model_4 = Sequential()
-    model_4.add(layers.Conv2D(128, 1, activation='relu'))
-    model_4.add(layers.Conv2D(256, 3, activation='relu'))
-
-    return model_4
-
-def create_extra_layers_5():
-    """ Create extra layers
-        8th to 11th blocks
-    """
-    model_5 = Sequential()
-    model_5.add(layers.Conv2D(128, 1, activation='relu'))
-    model_5.add(layers.Conv2D(256, 4, activation='relu'))
-
-    return model_5
-
 
 def create_conf_head_layers(num_classes):
     """ Create layers for classification
