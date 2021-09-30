@@ -31,6 +31,7 @@ class SSD(Model):
         self.loc_head_layers = create_loc_head_layers()
 
         if arch == 'ssd300':
+            self.extra_layers.pop(-1)
             self.conf_head_layers.pop(-2)
             self.loc_head_layers.pop(-2)
 
