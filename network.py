@@ -27,13 +27,6 @@ class SSD(Model):
         )
         self.extra_layers = create_extra_layers()
 
-        self.conf_head_layers = create_conf_head_layers(num_classes)
-        self.loc_head_layers = create_loc_head_layers()
-
-        if arch == 'ssd300':
-            self.conf_head_layers.pop(-2)
-            self.loc_head_layers.pop(-2)
-
     def compute_heads(self, conf, loc):
         """ Compute outputs of classification and regression heads
         Args:
