@@ -7,7 +7,7 @@ import numpy as np
 import os
 
 from layers import create_vgg16_layers, create_extra_layers
-tf.config.run_functions_eagerly(True)
+tf.data.experimental.enable_debug_mode()
 
 
 class SSD(Model):
