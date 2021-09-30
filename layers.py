@@ -59,34 +59,34 @@ def create_extra_layers():
     """ Create extra layers
         8th to 11th blocks
     """
+    model_1 = Sequential()
+    model_1.add(layers.Conv2D(256, 1, activation='relu'))
+    model_1.add(layers.Conv2D(512, 3, strides=2, padding='same',
+                      activation='relu'))
+
+    model_2 = Sequential()
+    model_2.add(layers.Conv2D(128, 1, activation='relu'))
+    model_2.add(layers.Conv2D(256, 3, strides=2, padding='same',
+                          activation='relu'))
+
+    model_3 = Sequential()
+    model_3.add(layers.Conv2D(128, 1, activation='relu'))
+    model_3.add(layers.Conv2D(256, 3, activation='relu'))
+
+    model_4 = Sequential()
+    model_4.add(layers.Conv2D(128, 1, activation='relu'))
+    model_4.add(layers.Conv2D(256, 3, activation='relu'))
+
+    model_5 = Sequential()
+    model_5.add(layers.Conv2D(128, 1, activation='relu'))
+    model_5.add(layers.Conv2D(256, 4, activation='relu'))
+
     extra_layers = [
-        # 8th block output shape: B, 512, 10, 10
-        Sequential([
-            layers.Conv2D(256, 1, activation='relu'),
-            layers.Conv2D(512, 3, strides=2, padding='same',
-                          activation='relu'),
-        ]),
-        # 9th block output shape: B, 256, 5, 5
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 3, strides=2, padding='same',
-                          activation='relu'),
-        ]),
-        # 10th block output shape: B, 256, 3, 3
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 3, activation='relu'),
-        ]),
-        # 11th block output shape: B, 256, 1, 1
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 3, activation='relu'),
-        ]),
-        # 12th block output shape: B, 256, 1, 1
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 4, activation='relu'),
-        ])
+        model_1,
+        model_2,
+        model_3,
+        model_4,
+        model_5
     ]
 
     return extra_layers
