@@ -41,10 +41,10 @@ class SSD(Model):
             loc: output of the idx-th regression head
         """
         conf = self.conf_head_layers[idx](x)
-        conf = tf.reshape(conf, [conf.shape[0], -1, self.num_classes])
+        conf = tf.reshape(conf, [tf.shape(conf)[0], -1, self.num_classes])
 
         loc = self.loc_head_layers[idx](x)
-        loc = tf.reshape(loc, [loc.shape[0], -1, 4])
+        loc = tf.reshape(loc, [tf.shape(loc)[0], -1, 4])
 
         return conf, loc
 
