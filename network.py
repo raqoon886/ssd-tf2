@@ -108,13 +108,12 @@ class SSD(Model):
         locs.append(loc)
         head_idx += 1
 
-        for i in range(len(self.extra_layers.layers)):
-            x = self.extra_layers.get_layer(index=i)(x)
-            if i % 2 == 1:
-                conf, loc = self.compute_heads(x, head_idx)
-                confs.append(conf)
-                locs.append(loc)
-                head_idx += 1
+        for layer in self.extra_layers:
+            x = layer(x)
+            conf, loc = self.compute_heads(x, head_idx)
+            confs.append(conf)
+            locs.append(loc)
+            head_idx += 1
 
         confs = tf.concat(confs, axis=1)
         locs = tf.concat(locs, axis=1)
