@@ -69,6 +69,7 @@ class SSD(Model):
         self.vgg16_conv7.get_layer(index=3).set_weights(
             [conv7_weights, conv7_biases])
 
+    @tf.function
     def call(self, x):
         """ The forward pass
         Args:
