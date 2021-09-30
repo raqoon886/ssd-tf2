@@ -6,10 +6,8 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from layers import create_vgg16_layers, \
-    create_extra_layers, \
-    create_conf_head_layers, \
-    create_loc_head_layers
+from layers import create_vgg16_layers, create_extra_layers
+tf.config.run_functions_eagerly(True)
 
 
 class SSD(Model):
