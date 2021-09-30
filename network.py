@@ -24,19 +24,19 @@ class SSD(Model):
             gamma_initializer='glorot_uniform'
         )
         self.extra_layers = create_extra_layers()
-        self.conf_1 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.conf_2 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.conf_3 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.conf_4 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.conf_5 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.conf_6 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=1),input_shape=(None,None,None))
+        self.conf_1 = layers.Conv2D(4 * num_classes, kernel_size=3, padding='same')
+        self.conf_2 = layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')
+        self.conf_3 = layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')
+        self.conf_4 = layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')
+        self.conf_5 = layers.Conv2D(4 * num_classes, kernel_size=3, padding='same')
+        self.conf_6 = layers.Conv2D(4 * num_classes, kernel_size=1)
 
-        self.loc_1 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.loc_2 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.loc_3 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.loc_4 = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.loc_5 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same'),input_shape=(None,None,None))
-        self.loc_6 = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=1),input_shape=(None,None,None))
+        self.loc_1 = layers.Conv2D(4 * 4, kernel_size=3, padding='same')
+        self.loc_2 = layers.Conv2D(6 * 4, kernel_size=3, padding='same')
+        self.loc_3 = layers.Conv2D(6 * 4, kernel_size=3, padding='same')
+        self.loc_4 = layers.Conv2D(6 * 4, kernel_size=3, padding='same')
+        self.loc_5 = layers.Conv2D(4 * 4, kernel_size=3, padding='same')
+        self.loc_6 = layers.Conv2D(4 * 4, kernel_size=1)
 
     def compute_heads(self, conf, loc):
         """ Compute outputs of classification and regression heads
@@ -47,8 +47,8 @@ class SSD(Model):
             conf: output of the idx-th classification head
             loc: output of the idx-th regression head
         """
-        conf = tf.reshape(conf, [tf.shape(conf)[1], -1, self.num_classes])
-        loc = tf.reshape(loc, [tf.shape(loc)[1], -1, 4])
+        conf = tf.reshape(conf, [tf.shape(conf)[0], -1, self.num_classes])
+        loc = tf.reshape(loc, [tf.shape(loc)[0], -1, 4])
 
         return conf, loc
 
@@ -97,9 +97,8 @@ class SSD(Model):
         for i in range(len(self.vgg16_conv4.layers)):
             x = self.vgg16_conv4.get_layer(index=i)(x)
             if i == len(self.vgg16_conv4.layers) - 5:
-                tmp = tf.expand_dims(x,0)
-                conf = self.conf_1(tmp)
-                loc = self.loc_1(tmp)
+                conf = self.conf_1(x)
+                loc = self.loc_1(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
@@ -107,9 +106,8 @@ class SSD(Model):
 
         x = self.vgg16_conv7(x)
 
-        tmp = tf.expand_dims(x, 0)
-        conf = self.conf_2(tmp)
-        loc = self.loc_2(tmp)
+        conf = self.conf_2(x)
+        loc = self.loc_2(x)
         conf, loc = self.compute_heads(conf, loc)
 
         confs.append(conf)
@@ -119,33 +117,29 @@ class SSD(Model):
         for i in range(len(self.extra_layers.layers)):
             x = self.extra_layers.get_layer(index=i)(x)
             if i == 2:
-                tmp = tf.expand_dims(x, 0)
-                conf = self.conf_3(tmp)
-                loc = self.loc_3(tmp)
+                conf = self.conf_3(x)
+                loc = self.loc_3(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
             if i == 4:
-                tmp = tf.expand_dims(x, 0)
-                conf = self.conf_4(tmp)
-                loc = self.loc_4(tmp)
+                conf = self.conf_4(x)
+                loc = self.loc_4(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
             if i == 6:
-                tmp = tf.expand_dims(x, 0)
-                conf = self.conf_5(tmp)
-                loc = self.loc_5(tmp)
+                conf = self.conf_5(x)
+                loc = self.loc_5(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
             if i == 8:
-                tmp = tf.expand_dims(x, 0)
-                conf = self.conf_6(tmp)
-                loc = self.loc_6(tmp)
+                conf = self.conf_6(x)
+                loc = self.loc_6(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
