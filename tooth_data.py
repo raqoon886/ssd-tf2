@@ -132,7 +132,7 @@ class ToothDataset():
                 img, boxes, labels = random_patching(img, boxes, labels)
             elif augmentation_method == 'flip':
                 img, boxes, labels = horizontal_flip(img, boxes, labels)
-                # img, boxes, labels = vertical_flip(img, boxes, labels)
+                img, boxes, labels = vertical_flip(img, boxes, labels)
 
             img = np.array(img.resize(
                 (self.new_size, self.new_size)), dtype=np.float32)
