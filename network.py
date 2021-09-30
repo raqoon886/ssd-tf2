@@ -24,7 +24,7 @@ class SSD(Model):
             gamma_initializer='glorot_uniform'
         )
         self.extra_layers = create_extra_layers()
-        self.conf_1 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'),input_shape=(38,38,512))
+        self.conf_1 = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
         self.conf_2 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
         self.conf_3 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
         self.conf_4 = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'),input_shape=(None,None,None))
