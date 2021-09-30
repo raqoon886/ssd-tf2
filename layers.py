@@ -81,12 +81,61 @@ def create_extra_layers():
     model_5.add(layers.Conv2D(128, 1, activation='relu'))
     model_5.add(layers.Conv2D(256, 4, activation='relu'))
 
-    extra_layers = NoDependency([])
-    temp = [model_1, model_2, model_3, model_4, model_5]
-    for i in range(5):
-        extra_layers.append(temp[i].trainable_variables)
-
     return extra_layers
+
+def create_extra_layers_1():
+    """ Create extra layers
+        8th to 11th blocks
+    """
+    model_1 = Sequential()
+    model_1.add(layers.Conv2D(256, 1, activation='relu'))
+    model_1.add(layers.Conv2D(512, 3, strides=2, padding='same',
+                      activation='relu'))
+
+    return model_1
+
+def create_extra_layers_2():
+    """ Create extra layers
+        8th to 11th blocks
+    """
+
+    model_2 = Sequential()
+    model_2.add(layers.Conv2D(128, 1, activation='relu'))
+    model_2.add(layers.Conv2D(256, 3, strides=2, padding='same',
+                          activation='relu'))
+
+    return model_2
+
+def create_extra_layers_3():
+    """ Create extra layers
+        8th to 11th blocks
+    """
+    model_3 = Sequential()
+    model_3.add(layers.Conv2D(128, 1, activation='relu'))
+    model_3.add(layers.Conv2D(256, 3, activation='relu'))
+
+    return model_3
+
+def create_extra_layers_4():
+    """ Create extra layers
+        8th to 11th blocks
+    """
+
+    model_4 = Sequential()
+    model_4.add(layers.Conv2D(128, 1, activation='relu'))
+    model_4.add(layers.Conv2D(256, 3, activation='relu'))
+
+    return model_4
+
+def create_extra_layers_5():
+    """ Create extra layers
+        8th to 11th blocks
+    """
+    model_5 = Sequential()
+    model_5.add(layers.Conv2D(128, 1, activation='relu'))
+    model_5.add(layers.Conv2D(256, 4, activation='relu'))
+
+    return model_5
 
 
 def create_conf_head_layers(num_classes):

@@ -5,7 +5,14 @@ import tensorflow as tf
 import numpy as np
 import os
 
-from layers import create_vgg16_layers, create_extra_layers, create_conf_head_layers, create_loc_head_layers
+from layers import create_vgg16_layers, \
+    create_extra_layers_1, \
+    create_extra_layers_2, \
+    create_extra_layers_3, \
+    create_extra_layers_4, \
+    create_extra_layers_5, \
+    create_conf_head_layers, \
+    create_loc_head_layers
 
 
 class SSD(Model):
@@ -22,12 +29,20 @@ class SSD(Model):
             beta_initializer='glorot_uniform',
             gamma_initializer='glorot_uniform'
         )
-        self.extra_layers = create_extra_layers()
+        self.extra_layers_1 = create_extra_layers_1()
+        self.extra_layers_2 = create_extra_layers_2()
+        self.extra_layers_3 = create_extra_layers_3()
+        self.extra_layers_4 = create_extra_layers_4()
+        self.extra_layers_5 = create_extra_layers_5()
+        self.extra_layers = [self.extra_layers_1,
+                             self.extra_layers_2,
+                             self.extra_layers_3,
+                             self.extra_layers_4]
+
         self.conf_head_layers = create_conf_head_layers(num_classes)
         self.loc_head_layers = create_loc_head_layers()
 
         if arch == 'ssd300':
-            self.extra_layers.pop(-1)
             self.conf_head_layers.pop(-2)
             self.loc_head_layers.pop(-2)
 
