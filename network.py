@@ -87,8 +87,8 @@ class SSD(Model):
         for i in range(len(self.vgg16_conv4.layers)):
             x = self.vgg16_conv4.get_layer(index=i)(x)
             if i == len(self.vgg16_conv4.layers) - 5:
-                conf = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same')(x))
-                loc = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same')(x))
+                conf = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'))(x)
+                loc = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same'))(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
@@ -96,9 +96,8 @@ class SSD(Model):
 
         x = self.vgg16_conv7(x)
 
-        conf = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3,
-                             padding='same'))
-        loc = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same')(x))
+        conf = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'))(x)
+        loc = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'))(x)
         conf, loc = self.compute_heads(conf, loc)
 
         confs.append(conf)
@@ -108,29 +107,29 @@ class SSD(Model):
         for i in range(len(self.extra_layers.layers)):
             x = self.extra_layers.get_layer(index=i)(x)
             if i == 2:
-                conf = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')(x))
-                loc = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same')(x))
+                conf = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'))(x)
+                loc = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'))(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
             if i == 4:
-                conf = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same')(x))
-                loc = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same')(x))
+                conf = TimeDistributed(layers.Conv2D(6 * num_classes, kernel_size=3, padding='same'))(x)
+                loc = TimeDistributed(layers.Conv2D(6 * 4, kernel_size=3, padding='same'))(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
             if i == 6:
-                conf = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same')(x))
-                loc = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same')(x))
+                conf = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=3, padding='same'))(x)
+                loc = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=3, padding='same'))(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
                 head_idx += 1
             if i == 8:
-                conf = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=1)(x))
-                loc = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=1)(x))
+                conf = TimeDistributed(layers.Conv2D(4 * num_classes, kernel_size=1))(x)
+                loc = TimeDistributed(layers.Conv2D(4 * 4, kernel_size=1))(x)
                 conf, loc = self.compute_heads(conf, loc)
                 confs.append(conf)
                 locs.append(loc)
