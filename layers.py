@@ -81,13 +81,10 @@ def create_extra_layers():
     model_5.add(layers.Conv2D(128, 1, activation='relu'))
     model_5.add(layers.Conv2D(256, 4, activation='relu'))
 
-    extra_layers = [
-        model_1,
-        model_2,
-        model_3,
-        model_4,
-        model_5
-    ]
+    extra_layers = []
+    temp = [model_1, model_2, model_3, model_4, model_5]
+    for i in range(5):
+        extra_layers.append(temp[i].trainable_variables)
 
     return extra_layers
 
