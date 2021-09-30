@@ -31,7 +31,6 @@ class SSD(Model):
         self.loc_head_layers = create_loc_head_layers()
 
         if arch == 'ssd300':
-            self.extra_layers.pop(-1)
             self.conf_head_layers.pop(-2)
             self.loc_head_layers.pop(-2)
 
@@ -109,12 +108,13 @@ class SSD(Model):
         locs.append(loc)
         head_idx += 1
 
-        for layer in self.extra_layers:
-            x = layer(x)
-            conf, loc = self.compute_heads(x, head_idx)
-            confs.append(conf)
-            locs.append(loc)
-            head_idx += 1
+        for i in range(len(self.extra_layers.layers)):
+            x = self.extra_layers.get_layer(index=i)(x)
+            if i in [2, 4, 6, 8]:
+                conf, loc = tmp.compute_heads(x, head_idx)
+                confs.append(conf)
+                locs.append(loc)
+                head_idx += 1
 
         confs = tf.concat(confs, axis=1)
         locs = tf.concat(locs, axis=1)

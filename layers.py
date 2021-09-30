@@ -59,34 +59,24 @@ def create_extra_layers():
         8th to 11th blocks
     """
     extra_layers = [
-        # 8th block output shape: B, 512, 10, 10
-        Sequential([
-            layers.Conv2D(256, 1, activation='relu'),
-            layers.Conv2D(512, 3, strides=2, padding='same',
-                          activation='relu'),
-        ]),
-        # 9th block output shape: B, 256, 5, 5
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 3, strides=2, padding='same',
-                          activation='relu'),
-        ]),
-        # 10th block output shape: B, 256, 3, 3
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 3, activation='relu'),
-        ]),
-        # 11th block output shape: B, 256, 1, 1
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 3, activation='relu'),
-        ]),
-        # 12th block output shape: B, 256, 1, 1
-        Sequential([
-            layers.Conv2D(128, 1, activation='relu'),
-            layers.Conv2D(256, 4, activation='relu'),
-        ])
-    ]
+        layers.Conv2D(256, 1, activation='relu'),
+        layers.Conv2D(512, 3, strides=2, padding='same', activation='relu'),
+
+        layers.Conv2D(128, 1, activation='relu'),
+        layers.Conv2D(256, 3, strides=2, padding='same', activation='relu'),
+
+        layers.Conv2D(128, 1, activation='relu'),
+        layers.Conv2D(256, 3, activation='relu'),
+
+        layers.Conv2D(128, 1, activation='relu'),
+        layers.Conv2D(256, 3, activation='relu')]
+
+    x = layers.Input(shape=[None, None, 1024])
+    out = x
+    for layer in extra_layers:
+        out = layer(out)
+
+    extra_layers = tf.keras.Model(x, out)
 
     return extra_layers
 
