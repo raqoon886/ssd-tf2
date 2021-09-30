@@ -33,7 +33,6 @@ os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
 NUM_CLASSES = 1
 
 
-@tf.function
 def train_step(imgs, gt_confs, gt_locs, ssd, criterion, optimizer):
     with tf.GradientTape() as tape:
         confs, locs = ssd(imgs)
