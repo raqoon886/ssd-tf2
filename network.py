@@ -34,10 +34,6 @@ class SSD(Model):
         self.extra_layers_3 = create_extra_layers_3()
         self.extra_layers_4 = create_extra_layers_4()
         self.extra_layers_5 = create_extra_layers_5()
-        self.extra_layers = [self.extra_layers_1,
-                             self.extra_layers_2,
-                             self.extra_layers_3,
-                             self.extra_layers_4]
 
         self.conf_head_layers = create_conf_head_layers(num_classes)
         self.loc_head_layers = create_loc_head_layers()
@@ -120,12 +116,29 @@ class SSD(Model):
         locs.append(loc)
         head_idx += 1
 
-        for layer in self.extra_layers:
-            x = layer(x)
-            conf, loc = self.compute_heads(x, head_idx)
-            confs.append(conf)
-            locs.append(loc)
-            head_idx += 1
+        x = self.extra_layers_1(x)
+        conf, loc = self.compute_heads(x, head_idx)
+        confs.append(conf)
+        locs.append(loc)
+        head_idx += 1
+
+        x = self.extra_layers_2(x)
+        conf, loc = self.compute_heads(x, head_idx)
+        confs.append(conf)
+        locs.append(loc)
+        head_idx += 1
+
+        x = self.extra_layers_3(x)
+        conf, loc = self.compute_heads(x, head_idx)
+        confs.append(conf)
+        locs.append(loc)
+        head_idx += 1
+
+        x = self.extra_layers_4(x)
+        conf, loc = self.compute_heads(x, head_idx)
+        confs.append(conf)
+        locs.append(loc)
+        head_idx += 1
 
         confs = tf.concat(confs, axis=1)
         locs = tf.concat(locs, axis=1)
